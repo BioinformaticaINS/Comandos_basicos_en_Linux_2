@@ -1,4 +1,4 @@
-# Comandos básicos en Linux_2
+# Comandos básicos en Linux 2
 
 ## **Objetivo:**
 
