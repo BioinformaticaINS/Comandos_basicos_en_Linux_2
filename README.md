@@ -336,6 +336,8 @@ El paquete `bio` incluye dos comandos principales: `bio fetch` para descargar da
 - **Descarga de ensamblados genómicos**:
   - **GenBank**:
     ```bash
+    # Requerimos instalar el listado de los esambles genómicos.
+    # bio --download   
     bio search GCA_000006155
     ```
   - **FASTA**:
