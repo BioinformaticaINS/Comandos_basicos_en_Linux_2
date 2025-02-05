@@ -454,7 +454,7 @@ sed [opcion(es)] ['orden(es)'] [archivo(s)]
 - **Objetivo**: Extraer solo los encabezados de las secuencias.
 - **Comando**:
   ```bash
-  sed -n '/^>/p' secuencia.fasta
+  sed -n '/^>/p' NC_045512.2.fasta
   ```
 - **Salida**:
   ```
@@ -462,11 +462,11 @@ sed [opcion(es)] ['orden(es)'] [archivo(s)]
   ```
 
 #### **1.3.2 Ejercicio: Eliminar líneas vacías en un archivo FASTQ**
-- **Archivo**: `secuencia.fastq` (obtenido con `bio fetch` o `fastq-dump`).
+- **Archivo**: `SRR1972917_1.fastq` (obtenido con `bio fetch` o `fastq-dump`).
 - **Objetivo**: Eliminar líneas vacías.
 - **Comando**:
   ```bash
-  sed '/^$/d' secuencia.fastq
+  sed '/^$/d' SRR1972917_1.fastq
   ```
 - **Salida**: Archivo FASTQ sin líneas vacías.
 
@@ -475,11 +475,11 @@ sed [opcion(es)] ['orden(es)'] [archivo(s)]
 - **Objetivo**: Cambiar el formato del encabezado.
 - **Comando**:
   ```bash
-  sed 's/>.*/>nuevo_encabezado/' secuencia.fasta
+  sed 's/>.*/>new_variant/' NC_045512.2.fasta
   ```
 - **Salida**:
   ```
-  >nuevo_encabezado
+  >new_variant
   ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAAC
   ```
 
@@ -509,11 +509,11 @@ awk '/patron_busqueda/{accion_a_realizar_coincidencia;otra_accion}' archivo
 #### **2.4 Ejercicios con `awk`**
 
 ##### **2.4.1 Ejercicio: Extraer secuencias de un archivo FASTA**
-- **Archivo**: `secuencia.fasta`.
+- **Archivo**: `NC_045512.2.fasta`.
 - **Objetivo**: Extraer solo las secuencias (sin encabezados).
 - **Comando**:
   ```bash
-  awk '/^[^>]/ {print}' secuencia.fasta
+  awk '/^[^>]/ {print}' NC_045512.2.fasta
   ```
 - **Salida**:
   ```
@@ -521,11 +521,11 @@ awk '/patron_busqueda/{accion_a_realizar_coincidencia;otra_accion}' archivo
   ```
 
 ##### **2.4.2 Ejercicio: Contar el número de secuencias en un archivo FASTA**
-- **Archivo**: `secuencia.fasta`.
+- **Archivo**: `NC_045512.2.fasta`.
 - **Objetivo**: Contar cuántas secuencias hay.
 - **Comando**:
   ```bash
-  awk '/^>/ {count++} END {print count}' secuencia.fasta
+  awk '/^>/ {count++} END {print count}' NC_045512.2.fasta
   ```
 - **Salida**:
   ```
@@ -533,23 +533,30 @@ awk '/patron_busqueda/{accion_a_realizar_coincidencia;otra_accion}' archivo
   ```
 
 ##### **2.4.3 Ejercicio: Filtrar líneas de calidad en un archivo FASTQ**
-- **Archivo**: `secuencia.fastq`.
+- **Archivo**: `SRR1972917_1.fastq`.
 - **Objetivo**: Extraer solo las líneas de calidad.
 - **Comando**:
   ```bash
-  awk 'NR % 4 == 0' secuencia.fastq
+  awk 'NR % 4 == 0' SRR1972917_1.fastq
   ```
 - **Salida**:
   ```
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  @CCFDDFFHGHHHGIJJIIJJJJGJJJJGIJIJJFIJJJIIJJJJHHFHHFFFFAADEFEDDDDDDDDDDDD??CCCDDDDDDCCCDDCCCDD:?CABDDB
+   @CCFFFFFHHHHHJJJJJJJJGIJJJIJJJJJJJJJIJJIJJJJJJJJIHIHHHFFDDDDDDDDDDDDDBDBDCDDDDDDDDDDD@C@DCDDDDDDCCDD:
+   @@CFFDDDHHHHHJJIJJJJJIHIIJJJJIJJHHHHHFFFDDD>BDDDDDDDDDDDDB?8AB:@>BBBDDDD@CDCAAADDDCDCACDD-)99<889@9B<
+   BBBFFFFFHHHHHJJJJJJJIJJJJJIJJJJIJJJJJJJJJJJJJJJIJIIIHIIIIIJJJIIJIJIIJIIJJJJIHHFFFDDEEECDD;?CDEEDDDDDC
+   CCCFFFFFHHHGHHHIIJIIIJJIJJJJGHIJJIHHIJJJBHJJIJIIEGHGHFFDDBBBD?BBC>CDD@?B99>&5955ACDCBD<A3>9A<<BDBDD?<
+   CCCFFFFFHHHHHJJJJJIGHHIHIJIJJJFFHHJJJGIHHEHFFFDDDDDDDDDCDDDDDDDDDDDDBDBBABAACDDDDDCDBB>CAACDBDDDD<>4:
+   CCCFFFFFHHHHHJJIJJJJJJFHIIHIJJJGJJHHEIJJJIIJJJJGEDGGHJHHHFEBDDFDB=B##################################
+
   ```
 
 ##### **2.4.3 Ejercicio: Extraer IDs de un archivo FASTQ**
-- **Archivo**: `secuencia.fastq`.
+- **Archivo**: `SRR1972917_1.fastq`.
 - **Objetivo**: Extraer solo los IDs de las secuencias.
 - **Comando**:
   ```bash
-  awk 'NR % 4 == 1' secuencia.fastq
+  awk 'NR % 4 == 1' SRR1972917_1.fastq
   ```
 - **Salida**:
   ```
@@ -557,13 +564,13 @@ awk '/patron_busqueda/{accion_a_realizar_coincidencia;otra_accion}' archivo
   ```
 
 ##### **4.2 Ejercicio: Convertir un archivo FASTQ a FASTA**
-- **Archivo**: `secuencia.fastq`.
+- **Archivo**: `SRR1972917_1.fastq`.
 - **Objetivo**: Convertir el archivo FASTQ a formato FASTA.
 - **Comando**:
   ```bash
-  awk 'NR % 4 == 1 {print ">" substr($0, 2)} NR % 4 == 2 {print}' secuencia.fastq > secuencia_converted.fasta
+  awk 'NR % 4 == 1 {print ">" substr($0, 2)} NR % 4 == 2 {print}' SRR1972917_1.fastq > SRR1972917_1_converted.fasta
   ```
-- **Salida** (`secuencia_converted.fasta`):
+- **Salida** (`SRR1972917_1_converted.fasta`):
   ```fasta
   >SRR1972976.1
   ATCGATCGATCGATCG
