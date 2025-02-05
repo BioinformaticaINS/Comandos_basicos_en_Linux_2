@@ -287,3 +287,134 @@ El comando anterior generará veinte archivos (dos archivos para cada una de las
 - Herramientas como `xtract` ayudan a procesar y extraer datos específicos.
 
 ---
+
+## **Uso del comando `bio`**
+
+El paquete `bio` incluye dos comandos principales: `bio fetch` para descargar datos y `bio search` para buscar información en diversas bases de datos biológicas. A continuación, se presenta un resumen estructurado de ambos comandos:
+
+---
+
+### **1. Instalación**
+- Para instalar o actualizar la herramienta `bio`, ejecuta:
+  ```bash
+  pip install bio --upgrade
+  ```
+- La documentación completa se encuentra en: [https://www.bioinfo.help/](https://www.bioinfo.help/).
+
+---
+
+### **2. `bio fetch`: Descarga de datos**
+
+#### **2.1 Funcionalidad principal**
+- **Descarga automática de datos**: `bio fetch` identifica automáticamente el tipo de dato basado en el número de acceso y lo descarga en el formato más adecuado.
+- **Fuentes soportadas**: GenBank, Ensembl, Short Read Archive (SRA), entre otros.
+
+#### **2.2 Ejemplos de uso**
+- **Descarga de datos desde GenBank**:
+  - **Nucleótidos**:
+    ```bash
+    bio fetch NC_045512
+    ```
+  - **Proteínas**:
+    ```bash
+    bio fetch YP_009724390
+    ```
+  - **Múltiples accesiones**:
+    ```bash
+    bio fetch NC_045512 MN996532 > genomes.gb
+    ```
+  - **Formatos alternativos**:
+    - **FASTA**:
+      ```bash
+      bio fetch NC_045512 --format fasta
+      ```
+    - **GFF**:
+      ```bash
+      bio fetch NC_045512 --format gff
+      ```
+
+- **Descarga de ensamblados genómicos**:
+  - **GenBank**:
+    ```bash
+    bio search GCA_000006155
+    ```
+  - **FASTA**:
+    ```bash
+    bio search GCA_000006155 --format fasta
+    ```
+  - **GFF**:
+    ```bash
+    bio search GCA_000006155 --format gff
+    ```
+
+- **Descarga de datos desde Ensembl**:
+  - **Genes**:
+    ```bash
+    bio fetch ENSG00000157764
+    ```
+  - **Transcriptos**:
+    - **Contexto genómico**:
+      ```bash
+      bio fetch ENST00000288602
+      ```
+    - **ADN complementario (cDNA)**:
+      ```bash
+      bio fetch ENST00000288602 --type cdna
+      ```
+    - **Secuencia codificante (CDS)**:
+      ```bash
+      bio fetch ENST00000288602 --type cds
+      ```
+    - **Proteína**:
+      ```bash
+      bio fetch ENST00000288602 --type protein
+      ```
+
+---
+
+### **3. `bio search`: Búsqueda de información**
+
+#### **3.1 Funcionalidad principal**
+- **Búsqueda unificada**: `bio search` proporciona una interfaz de línea de comandos para buscar en múltiples fuentes de datos, como **GenBank**, **SRA** y **MyGene**.
+- **Reconocimiento automático**: Identifica automáticamente el tipo de búsqueda basado en el término proporcionado (por ejemplo, números de acceso, símbolos de genes, etc.).
+
+#### **3.2 Ejemplos de uso**
+- **Búsqueda en GenBank**:
+  - **Nucleótidos**:
+    ```bash
+    bio search AF086833
+    ```
+  - **Proteínas**:
+    ```bash
+    bio search NP_000509
+    ```
+
+- **Búsqueda en SRA**:
+  - **Información de bioproyectos**:
+    ```bash
+    bio search PRJNA257197 --limit 10 -tab
+    ```
+  - **Información de runs**:
+    ```bash
+    bio search SRR14575325
+    ```
+
+- **Búsqueda en MyGene**:
+  - **Símbolos de genes**:
+    ```bash
+    bio search symbol:HBB --limit 1
+    ```
+  - **Anotación con IDs de Ensembl**:
+    ```bash
+    bio search symbol:HBB --species human --fields ensembl
+    ```
+
+- **Búsqueda en ensamblados de NCBI**:
+  - **Por número de ensamblado**:
+    ```bash
+    bio search GCA_000002415
+    ```
+  - **Por nombre de organismo**:
+    ```bash
+    bio search plasmodium -tab
+    ```
