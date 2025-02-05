@@ -333,22 +333,27 @@ El paquete `bio` incluye dos comandos principales: `bio fetch` para descargar da
       bio fetch NC_045512 --format gff
       ```
 
-- **Descarga de ensamblados genómicos**:
-  - **GenBank**:
+- **Buscar información sobre un ensamblado genómico**:
+  
     ```bash
     # Requerimos instalar el listado de los esambles genómicos.
     # bio --download   
     bio search GCA_000006155
     ```
-  - **FASTA**:
+-  **Buscar información sobre un gen**:
     ```bash
-    bio search GCA_000006155 --format fasta
+    bio search symbol:HBB --species human
     ```
-  - **GFF**:
+- **Buscar información sobre un proyecto en SRA**:
     ```bash
-    bio search GCA_000006155 --format gff
+    bio search PRJNA257197
     ```
-
+- **Ejemplo de uso avanzado de bio search**
+  Si deseas buscar información sobre un ensamblado y obtener solo ciertos campos en formato CSV, puedes usar:
+  
+   ```bash
+   bio search GCA_000006155 --fields accession,organism_name,assembly_level --csv
+   ```
 - **Descarga de datos desde Ensembl**:
   - **Genes**:
     ```bash
