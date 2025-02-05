@@ -418,3 +418,202 @@ El paquete `bio` incluye dos comandos principales: `bio fetch` para descargar da
     ```bash
     bio search plasmodium -tab
     ```
+
+### **Uso de `sed` y `awk` para manipulación de archivos biológicos**
+
+A continuación, se presenta una guía práctica para el uso de los comandos `sed` y `awk` en la manipulación de archivos biológicos como FASTA, FASTQ, entre otros. Incluye tablas de opciones y órdenes comunes, así como ejercicios prácticos.
+
+---
+
+## **1. Comando `sed` (Stream Editor)**
+
+### **1.1 Características principales**
+- **Editor de flujo de texto**: Realiza transformaciones en texto sin modificar el archivo original (a menos que se indique).
+- **Operación línea por línea**: Procesa el archivo línea a línea.
+- **Soporte para expresiones regulares**: Permite búsquedas y sustituciones avanzadas.
+
+### **1.2 Sintaxis básica**
+```bash
+sed [opcion(es)] ['orden(es)'] [archivo(s)]
+```
+
+### **1.3 Opciones comunes de `sed`**
+
+| **Opción** | **Descripción**                                                                 |
+|------------|---------------------------------------------------------------------------------|
+| `-e`       | Especifica múltiples órdenes.                                                   |
+| `-f`       | Lee las órdenes desde un archivo.                                               |
+| `-n`       | Suprime la salida automática (útil con la orden `p`).                           |
+| `-i`       | Edita el archivo directamente (in-place).                                       |
+| `-r`       | Usa expresiones regulares extendidas (ERE).                                     |
+
+### **1.4 Órdenes comunes de `sed`**
+
+| **Orden** | **Descripción**                                                                 |
+|-----------|---------------------------------------------------------------------------------|
+| `s`       | Sustituye texto. Ejemplo: `s/old/new/`.                                         |
+| `p`       | Imprime líneas.                                                                 |
+| `d`       | Borra líneas.                                                                   |
+| `a`       | Añade texto después de una línea.                                               |
+| `i`       | Inserta texto antes de una línea.                                               |
+| `c`       | Cambia una línea por otro texto.                                                |
+| `q`       | Sale del script después de procesar una línea.                                  |
+
+---
+
+### **1.5 Ejercicios con `sed`**
+
+#### **Ejercicio 1: Sustituir texto en un archivo FASTA**
+- **Objetivo**: Cambiar el nombre de un encabezado en un archivo FASTA.
+- **Archivo de entrada (`secuencia.fasta`)**:
+  ```fasta
+  >seq1
+  ATGCGTACGTAGCTAG
+  >seq2
+  CGATCGATCGATCGAT
+  ```
+- **Comando**:
+  ```bash
+  sed 's/>seq1/>nuevo_seq1/' secuencia.fasta
+  ```
+- **Salida**:
+  ```fasta
+  >nuevo_seq1
+  ATGCGTACGTAGCTAG
+  >seq2
+  CGATCGATCGATCGAT
+  ```
+
+#### **Ejercicio 2: Eliminar líneas vacías en un archivo**
+- **Objetivo**: Eliminar líneas vacías en un archivo FASTQ.
+- **Archivo de entrada (`secuencia.fastq`)**:
+  ```fastq
+  @seq1
+  ATCG
+  +
+  !!!!
+  
+  @seq2
+  GCTA
+  +
+  !!!!
+  ```
+- **Comando**:
+  ```bash
+  sed '/^$/d' secuencia.fastq
+  ```
+- **Salida**:
+  ```fastq
+  @seq1
+  ATCG
+  +
+  !!!!
+  @seq2
+  GCTA
+  +
+  !!!!
+  ```
+
+#### **Ejercicio 3: Extraer encabezados de un archivo FASTA**
+- **Objetivo**: Extraer solo los encabezados de un archivo FASTA.
+- **Comando**:
+  ```bash
+  sed -n '/^>/p' secuencia.fasta
+  ```
+- **Salida**:
+  ```fasta
+  >seq1
+  >seq2
+  ```
+
+---
+
+## **2. Comando `awk`**
+
+### **2.1 Características principales**
+- **Lenguaje de programación**: Permite manipular y analizar datos de texto.
+- **Operación línea por línea**: Procesa el archivo línea a línea.
+- **Excelente para análisis de columnas**: Ideal para archivos tabulares.
+
+### **2.2 Sintaxis básica**
+```bash
+awk '/patron_busqueda/{accion_a_realizar_coincidencia;otra_accion}' archivo
+```
+
+### **2.3 Variables comunes de `awk`**
+
+| **Variable** | **Descripción**                                                                 |
+|--------------|---------------------------------------------------------------------------------|
+| `$0`         | Representa toda la línea actual.                                                |
+| `$1, $2, ...`| Representa la primera, segunda, etc., columna de la línea.                      |
+| `NR`         | Número de línea actual.                                                         |
+| `NF`         | Número de campos (columnas) en la línea actual.                                 |
+
+---
+
+### **2.4 Ejercicios con `awk`**
+
+#### **Ejercicio 1: Extraer secuencias de un archivo FASTA**
+- **Objetivo**: Extraer solo las secuencias (sin encabezados) de un archivo FASTA.
+- **Archivo de entrada (`secuencia.fasta`)**:
+  ```fasta
+  >seq1
+  ATGCGTACGTAGCTAG
+  >seq2
+  CGATCGATCGATCGAT
+  ```
+- **Comando**:
+  ```bash
+  awk '/^[^>]/ {print}' secuencia.fasta
+  ```
+- **Salida**:
+  ```fasta
+  ATGCGTACGTAGCTAG
+  CGATCGATCGATCGAT
+  ```
+
+#### **Ejercicio 2: Contar el número de secuencias en un archivo FASTA**
+- **Objetivo**: Contar cuántas secuencias hay en un archivo FASTA.
+- **Comando**:
+  ```bash
+  awk '/^>/ {count++} END {print count}' secuencia.fasta
+  ```
+- **Salida**:
+  ```
+  2
+  ```
+
+#### **Ejercicio 3: Filtrar líneas en un archivo FASTQ**
+- **Objetivo**: Extraer solo las líneas de calidad en un archivo FASTQ.
+- **Archivo de entrada (`secuencia.fastq`)**:
+  ```fastq
+  @seq1
+  ATCG
+  +
+  !!!!
+  @seq2
+  GCTA
+  +
+  !!!!
+  ```
+- **Comando**:
+  ```bash
+  awk 'NR % 4 == 0' secuencia.fastq
+  ```
+- **Salida**:
+  ```fastq
+  !!!!
+  !!!!
+  ```
+
+#### **Ejercicio 4: Calcular la longitud de las secuencias en un archivo FASTA**
+- **Objetivo**: Calcular la longitud de cada secuencia en un archivo FASTA.
+- **Comando**:
+  ```bash
+  awk '/^>/ {if (seq!="") print length(seq); seq=""; next} {seq = seq $0} END {print length(seq)}' secuencia.fasta
+  ```
+- **Salida**:
+  ```
+  16
+  16
+  ```
