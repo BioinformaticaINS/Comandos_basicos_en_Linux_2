@@ -332,28 +332,7 @@ El paquete `bio` incluye dos comandos principales: `bio fetch` para descargar da
       ```bash
       bio fetch NC_045512 --format gff
       ```
-
-- **Buscar información sobre un ensamblado genómico**:
-  
-    ```bash
-    # Requerimos instalar el listado de los esambles genómicos.
-    # bio --download   
-    bio search GCA_000006155
-    ```
--  **Buscar información sobre un gen**:
-    ```bash
-    bio search symbol:HBB --species human
-    ```
-- **Buscar información sobre un proyecto en SRA**:
-    ```bash
-    bio search PRJNA257197
-    ```
-- **Ejemplo de uso avanzado de bio search**
-  Si deseas buscar información sobre un ensamblado y obtener solo ciertos campos en formato CSV, puedes usar:
-  
-   ```bash
-   bio search GCA_000006155 --fields accession,organism_name,assembly_level --csv
-   ```
+      
 - **Descarga de datos desde Ensembl**:
   - **Genes**:
     ```bash
@@ -426,25 +405,25 @@ El paquete `bio` incluye dos comandos principales: `bio fetch` para descargar da
     bio search plasmodium -tab
     ```
 
-### **Uso de `sed` y `awk` para manipulación de archivos biológicos**
+## **Uso de `sed` y `awk` para manipulación de archivos biológicos**
 
 A continuación, se presenta una guía práctica para el uso de los comandos `sed` y `awk` en la manipulación de archivos biológicos como FASTA, FASTQ, entre otros. Incluye tablas de opciones y órdenes comunes, así como ejercicios prácticos.
 
 ---
 
-## **1. Comando `sed` (Stream Editor)**
+### **1. Comando `sed` (Stream Editor)**
 
-### **1.1 Características principales**
+#### **1.1 Características principales**
 - **Editor de flujo de texto**: Realiza transformaciones en texto sin modificar el archivo original (a menos que se indique).
 - **Operación línea por línea**: Procesa el archivo línea a línea.
 - **Soporte para expresiones regulares**: Permite búsquedas y sustituciones avanzadas.
 
-### **1.2 Sintaxis básica**
+#### **1.2 Sintaxis básica**
 ```bash
 sed [opcion(es)] ['orden(es)'] [archivo(s)]
 ```
 
-### **1.3 Opciones comunes de `sed`**
+#### **1.3 Opciones comunes de `sed`**
 
 | **Opción** | **Descripción**                                                                 |
 |------------|---------------------------------------------------------------------------------|
@@ -454,7 +433,7 @@ sed [opcion(es)] ['orden(es)'] [archivo(s)]
 | `-i`       | Edita el archivo directamente (in-place).                                       |
 | `-r`       | Usa expresiones regulares extendidas (ERE).                                     |
 
-### **1.4 Órdenes comunes de `sed`**
+#### **1.4 Órdenes comunes de `sed`**
 
 | **Orden** | **Descripción**                                                                 |
 |-----------|---------------------------------------------------------------------------------|
@@ -468,86 +447,55 @@ sed [opcion(es)] ['orden(es)'] [archivo(s)]
 
 ---
 
-### **1.5 Ejercicios con `sed`**
+### **1.3. Ejercicios con `sed`**
 
-#### **Ejercicio 1: Sustituir texto en un archivo FASTA**
-- **Objetivo**: Cambiar el nombre de un encabezado en un archivo FASTA.
-- **Archivo de entrada (`secuencia.fasta`)**:
-  ```fasta
-  >seq1
-  ATGCGTACGTAGCTAG
-  >seq2
-  CGATCGATCGATCGAT
-  ```
-- **Comando**:
-  ```bash
-  sed 's/>seq1/>nuevo_seq1/' secuencia.fasta
-  ```
-- **Salida**:
-  ```fasta
-  >nuevo_seq1
-  ATGCGTACGTAGCTAG
-  >seq2
-  CGATCGATCGATCGAT
-  ```
-
-#### **Ejercicio 2: Eliminar líneas vacías en un archivo**
-- **Objetivo**: Eliminar líneas vacías en un archivo FASTQ.
-- **Archivo de entrada (`secuencia.fastq`)**:
-  ```fastq
-  @seq1
-  ATCG
-  +
-  !!!!
-  
-  @seq2
-  GCTA
-  +
-  !!!!
-  ```
-- **Comando**:
-  ```bash
-  sed '/^$/d' secuencia.fastq
-  ```
-- **Salida**:
-  ```fastq
-  @seq1
-  ATCG
-  +
-  !!!!
-  @seq2
-  GCTA
-  +
-  !!!!
-  ```
-
-#### **Ejercicio 3: Extraer encabezados de un archivo FASTA**
-- **Objetivo**: Extraer solo los encabezados de un archivo FASTA.
+#### **1.3.1 Ejercicio: Extraer encabezados de un archivo FASTA**
+- **Archivo**: `secuencia.fasta` (obtenido con `bio fetch` o `efetch`).
+- **Objetivo**: Extraer solo los encabezados de las secuencias.
 - **Comando**:
   ```bash
   sed -n '/^>/p' secuencia.fasta
   ```
 - **Salida**:
-  ```fasta
-  >seq1
-  >seq2
+  ```
+  >NC_045512.2 Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome
   ```
 
----
+#### **1.3.2 Ejercicio: Eliminar líneas vacías en un archivo FASTQ**
+- **Archivo**: `secuencia.fastq` (obtenido con `bio fetch` o `fastq-dump`).
+- **Objetivo**: Eliminar líneas vacías.
+- **Comando**:
+  ```bash
+  sed '/^$/d' secuencia.fastq
+  ```
+- **Salida**: Archivo FASTQ sin líneas vacías.
 
-## **2. Comando `awk`**
+#### **1.3.3 Ejercicio: Cambiar el formato de un archivo FASTA**
+- **Archivo**: `secuencia.fasta`.
+- **Objetivo**: Cambiar el formato del encabezado.
+- **Comando**:
+  ```bash
+  sed 's/>.*/>nuevo_encabezado/' secuencia.fasta
+  ```
+- **Salida**:
+  ```
+  >nuevo_encabezado
+  ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAAC
+  ```
 
-### **2.1 Características principales**
+### **2. Comando `awk`**
+
+#### **2.1 Características principales**
 - **Lenguaje de programación**: Permite manipular y analizar datos de texto.
 - **Operación línea por línea**: Procesa el archivo línea a línea.
 - **Excelente para análisis de columnas**: Ideal para archivos tabulares.
 
-### **2.2 Sintaxis básica**
+#### **2.2 Sintaxis básica**
 ```bash
 awk '/patron_busqueda/{accion_a_realizar_coincidencia;otra_accion}' archivo
 ```
 
-### **2.3 Variables comunes de `awk`**
+#### **2.3 Variables comunes de `awk`**
 
 | **Variable** | **Descripción**                                                                 |
 |--------------|---------------------------------------------------------------------------------|
@@ -558,69 +506,65 @@ awk '/patron_busqueda/{accion_a_realizar_coincidencia;otra_accion}' archivo
 
 ---
 
-### **2.4 Ejercicios con `awk`**
+#### **2.4 Ejercicios con `awk`**
 
-#### **Ejercicio 1: Extraer secuencias de un archivo FASTA**
-- **Objetivo**: Extraer solo las secuencias (sin encabezados) de un archivo FASTA.
-- **Archivo de entrada (`secuencia.fasta`)**:
-  ```fasta
-  >seq1
-  ATGCGTACGTAGCTAG
-  >seq2
-  CGATCGATCGATCGAT
-  ```
+##### **2.4.1 Ejercicio: Extraer secuencias de un archivo FASTA**
+- **Archivo**: `secuencia.fasta`.
+- **Objetivo**: Extraer solo las secuencias (sin encabezados).
 - **Comando**:
   ```bash
   awk '/^[^>]/ {print}' secuencia.fasta
   ```
 - **Salida**:
-  ```fasta
-  ATGCGTACGTAGCTAG
-  CGATCGATCGATCGAT
+  ```
+  ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAAC
   ```
 
-#### **Ejercicio 2: Contar el número de secuencias en un archivo FASTA**
-- **Objetivo**: Contar cuántas secuencias hay en un archivo FASTA.
+##### **2.4.2 Ejercicio: Contar el número de secuencias en un archivo FASTA**
+- **Archivo**: `secuencia.fasta`.
+- **Objetivo**: Contar cuántas secuencias hay.
 - **Comando**:
   ```bash
   awk '/^>/ {count++} END {print count}' secuencia.fasta
   ```
 - **Salida**:
   ```
-  2
+  1
   ```
 
-#### **Ejercicio 3: Filtrar líneas en un archivo FASTQ**
-- **Objetivo**: Extraer solo las líneas de calidad en un archivo FASTQ.
-- **Archivo de entrada (`secuencia.fastq`)**:
-  ```fastq
-  @seq1
-  ATCG
-  +
-  !!!!
-  @seq2
-  GCTA
-  +
-  !!!!
-  ```
+##### **2.4.3 Ejercicio: Filtrar líneas de calidad en un archivo FASTQ**
+- **Archivo**: `secuencia.fastq`.
+- **Objetivo**: Extraer solo las líneas de calidad.
 - **Comando**:
   ```bash
   awk 'NR % 4 == 0' secuencia.fastq
   ```
 - **Salida**:
-  ```fastq
-  !!!!
-  !!!!
+  ```
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ```
 
-#### **Ejercicio 4: Calcular la longitud de las secuencias en un archivo FASTA**
-- **Objetivo**: Calcular la longitud de cada secuencia en un archivo FASTA.
+##### **2.4.3 Ejercicio: Extraer IDs de un archivo FASTQ**
+- **Archivo**: `secuencia.fastq`.
+- **Objetivo**: Extraer solo los IDs de las secuencias.
 - **Comando**:
   ```bash
-  awk '/^>/ {if (seq!="") print length(seq); seq=""; next} {seq = seq $0} END {print length(seq)}' secuencia.fasta
+  awk 'NR % 4 == 1' secuencia.fastq
   ```
 - **Salida**:
   ```
-  16
-  16
+  @SRR1972976.1
+  ```
+
+##### **4.2 Ejercicio: Convertir un archivo FASTQ a FASTA**
+- **Archivo**: `secuencia.fastq`.
+- **Objetivo**: Convertir el archivo FASTQ a formato FASTA.
+- **Comando**:
+  ```bash
+  awk 'NR % 4 == 1 {print ">" substr($0, 2)} NR % 4 == 2 {print}' secuencia.fastq > secuencia_converted.fasta
+  ```
+- **Salida** (`secuencia_converted.fasta`):
+  ```fasta
+  >SRR1972976.1
+  ATCGATCGATCGATCG
   ```
